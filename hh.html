@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Chooser</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #92c9ff, #85baff);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            transition: background 1s ease-in-out;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            background-color: #4facfe;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: popIn 1.5s ease;
+        }
+        button:hover {
+            transform: scale(1.1);
+            background-color: #38b6ff;
+        }
+        #replyDisplay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out, visibility 1s;
+            z-index: 2;
+        }
+        #replyDisplay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        #songDisplay {
+            margin-top: 40px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            animation: fadeInSong 1s ease-in-out;
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+        #songDisplay.show {
+            transform: scale(1);
+        }
+        .link-button {
+            color: #ffeaa7;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 15px;
+            background-color: #ff6b6b;
+            transition: background-color 0.3s ease;
+        }
+        .link-button:hover {
+            color: #fff;
+            background-color: #ff4757;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes fadeInSong {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Choose Your Song Mode</h1>
+    <button onclick="chooseSong('sad')">Sad</button>
+    <button onclick="chooseSong('chill')">Chill</button>
+    <button onclick="chooseSong('rap')">Rap</button>
+    <button onclick="chooseSong('arabic')">Arabic</button>
+
+    <div id="replyDisplay"></div>
+    <div id="songDisplay"></div>
+
+    <script>
+        function chooseSong(mode) {
+            const replies = {
+                sad: [
+                    "I'm sorry you're feeling this way...",
+                    "It's okay to be sad sometimes.",
+                    "Let your emotions flow...",
+                    "You're not alone in this.",
+                    "Here’s something that might help you."
+                ],
+                chill: [
+                    "Time to relax and unwind...",
+                    "Chill vibes incoming.",
+                    "Sit back and enjoy.",
+                    "Here's something smooth for you.",
+                    "Take a moment to chill."
+                ],
+                rap: [
+                    "Let’s get hyped!",
+                    "Rap vibes incoming!",
+                    "Get ready for some fire bars.",
+                    "It's time to feel the beat.",
+                    "Let’s go, it’s rap time!"
+                ],
+                arabic: [
+                    "Here’s something soulful for you.",
+                    "Enjoy some Arabic vibes.",
+                    "A touch of cultural rhythm just for you.",
+                    "Here comes some beautiful Arabic music.",
+                    "Experience the soul of Arabia."
+                ]
+            };
+
+            // Change the background based on the selected mode
+            if (mode === 'chill') {
+                document.body.style.background = 'linear-gradient(135deg, #92c9ff, #85baff)';
+            } else if (mode === 'sad') {
+                document.body.style.background = 'linear-gradient(135deg, #b3b3b3, #8a8a8a)';
+            } else if (mode === 'rap') {
+                document.body.style.background = 'linear-gradient(135deg, #000000, #333333)';
+            } else if (mode === 'arabic') {
+                document.body.style.background = 'linear-gradient(135deg, #f8b400, #f39c12)';
+            }
+
+            // Display a random reply first
+            const randomReplyIndex = Math.floor(Math.random() * replies[mode].length);
+            const randomReply = replies[mode][randomReplyIndex];
+            const replyDisplay = document.getElementById('replyDisplay');
+            replyDisplay.innerHTML = randomReply;
+            replyDisplay.classList.add('show');
+
+            // After 2 seconds, hide the reply and show the song
+            setTimeout(() => {
+                replyDisplay.classList.remove('show');
+                displaySong(mode);
+            }, 2000);
+        }
+
+        function displaySong(mode) {
+            const songs = {
+                sad: [
+                    { title: "Someone Like You - Adele", youtube: "https://youtu.be/hLQl3WQQoQ0" },
+                    { title: "Let Her Go - Passenger", youtube: "https://youtu.be/RBumgq5yVrA" },
+                    { title: "Fix You - Coldplay", youtube: "https://youtu.be/k4V3Mo61fJM" },
+                    { title: "All I Want - Kodaline", youtube: "https://youtu.be/nW0ACEOEq6w" },
+                    { title: "When I Was Your Man - Bruno Mars", youtube: "https://youtu.be/ekzHIouo8Q4" },
+                    { title: "Hurt - Johnny Cash", youtube: "https://youtu.be/8AHCfZTRGiI" },
+                    { title: "Say Something - A Great Big World", youtube: "https://youtu.be/-2U0Ivkn2Ds" },
+                    { title: "Jar of Hearts - Christina Perri", youtube: "https://youtu.be/8v_4O44sfjM" },
+                    { title: "Someone You Loved - Lewis Capaldi", youtube: "https://youtu.be/bCuhuePlP8o" },
+                    { title: "The Night We Met - Lord Huron", youtube: "https://youtu.be/Kr0tTbTbmVA" },
+                    { title: "Skinny Love - Birdy", youtube: "https://youtu.be/aNzCDt2eidg" },
+                    { title: "Too Good at Goodbyes - Sam Smith", youtube: "https://youtu.be/J_ub7Etch2U" },
+                    { title: "Unsteady - X Ambassadors", youtube: "https://youtu.be/V-H6tv3kg08" },
+                    { title: "Lost Without You - Freya Ridings", youtube: "https://youtu.be/1fGkzJIvbdE" },
+                    { title: "Tears Dry On Their Own - Amy Winehouse", youtube: "https://youtu.be/ojdbDYahiCQ" },
+                    { title: "Dancing On My Own - Robyn", youtube: "https://youtu.be/CcNo07Xp8aQ" },
+                    { title: "The A Team - Ed Sheeran", youtube: "https://youtu.be/UAWcs5H-qgQ" },
+                    { title: "Say You Love Me - Jessie Ware", youtube: "https://youtu.be/zSQuIDXh9qI" },
+                    { title: "Gravity - Sara Bareilles", youtube: "https://youtu.be/rEXhAMtbaec" },
+                    { title: "Jealous - Labrinth", youtube: "https://youtu.be/6PJT9_LqvsU" }
+                ],
+                chill: [
+                    { title: "Sunflower - Post Malone", youtube: "https://youtu.be/ApXoWvfEYVU" },
+                    { title: "Electric Feel - MGMT", youtube: "https://youtu.be/MMR5JVo21wQ" },
+                    { title: "Feels - Calvin Harris", youtube: "https://youtu.be/ozv4q2ov3Mk" },
+                    { title: "Get You - Daniel Caesar", youtube: "https://youtu.be/uQFVqltOXRg" },
+                    { title: "Redbone - Childish Gambino", youtube: "https://youtu.be/Kp7eSUU9oy8" },
+                    { title: "Slow Dancing in a Burning Room - John Mayer", youtube: "https://youtu.be/oBIxScJ5rlY" },
+                    { title: "Riptide - Vance Joy", youtube: "https://youtu.be/uJ_1HMAGb4k" },
+                    { title: "Lost In Japan - Shawn Mendes", youtube: "https://youtu.be/eQWG8BVeryU" },
+                    { title: "New Light - John Mayer", youtube: "https://youtu.be/mQ055hHdxbE" },
+                    { title: "One Kiss - Calvin Harris, Dua Lipa", youtube: "https://youtu.be/DkeiKbqa02g" },
+                    { title: "Cold Little Heart - Michael Kiwanuka", youtube: "https://youtu.be/nOubjLM9Cbc" },
+                    { title: "Stay - Zedd & Alessia Cara", youtube: "https://youtu.be/h--P8HzYZ74" },
+                    { title: "Ocean Eyes - Billie Eilish", youtube: "https://youtu.be/viimfQi_pUw" },
+                    { title: "Electric Love - Børns", youtube: "https://youtu.be/RYr96YYEaZY" },
+                    { title: "Feels Like We Only Go Backwards - Tame Impala", youtube: "https://youtu.be/wycjnCCgUes" },
+                    { title: "Electric Relaxation - A Tribe Called Quest", youtube: "https://youtu.be/WHRnvjCkTsw" },
+                    { title: "Telegraph Ave - Childish Gambino", youtube: "https://youtu.be/rQAWDze_3zY" },
+                    { title: "Paris in the Rain - Lauv", youtube: "https://youtu.be/hTDb0ebFh8E" },
+                    { title: "Tadow - Masego & FKJ", youtube: "https://youtu.be/hC8CH0Z3L54" },
+                    { title: "I Fall Apart - Post Malone", youtube: "https://youtu.be/EVSfh3eg2JQ" }
+                ],
+                rap: [
+                    { title: "Lose Yourself - Eminem", youtube: "https://youtu.be/_Yhyp-_hX2s" },
+                    { title: "Sicko Mode - Travis Scott", youtube: "https://youtu.be/6ONRf7h3Mdk" },
+                    { title: "God's Plan - Drake", youtube: "https://youtu.be/xpVfcZ0ZcFM" },
+                    { title: "HUMBLE. - Kendrick Lamar", youtube: "https://youtu.be/tvTRZJ-4EyI" },
+                    { title: "No Role Modelz - J. Cole", youtube: "https://youtu.be/aE2drlA8vf8" },
+                    { title: "Life Goes On - Tupac", youtube: "https://youtu.be/1xzznKDnWqM" },
+                    { title: "Money Trees - Kendrick Lamar", youtube: "https://youtu.be/saOspXYf5m4" },
+                    { title: "99 Problems - JAY-Z", youtube: "https://youtu.be/dNYi8wR2hsM" },
+                    { title: "Rockstar - Post Malone ft. 21 Savage", youtube: "https://youtu.be/UceaB4D0jpo" },
+                    { title: "Mo Bamba - Sheck Wes", youtube: "https://youtu.be/RquA5Unz20E" },
+                    { title: "Mask Off - Future", youtube: "https://youtu.be/xvZqHgFz51I" },
+                    { title: "The Box - Roddy Ricch", youtube: "https://youtu.be/UNZqm3dxd2w" },
+                    { title: "All of the Lights - Kanye West", youtube: "https://youtu.be/HAfFfqiYLp0" },
+                    { title: "Swimming Pools (Drank) - Kendrick Lamar", youtube: "https://youtu.be/8-ejyHzz3XE" },
+                    { title: "Mercy - Kanye West, Big Sean, Pusha T, 2 Chainz", youtube: "https://youtu.be/7Dqgr0wNyPo" },
+                    { title: "What's Poppin - Jack Harlow", youtube: "https://youtu.be/w9uWPBDHEKE" },
+                    { title: "DNA. - Kendrick Lamar", youtube: "https://youtu.be/NPyx1xk4cLg" },
+                    { title: "All The Stars - Kendrick Lamar, SZA", youtube: "https://youtu.be/JQbjS0_ZfJ0" },
+                    { title: "In Da Club - 50 Cent", youtube: "https://youtu.be/5qm8PH4xAss" },
+                    { title: "Run This Town - JAY-Z ft. Rihanna & Kanye West", youtube: "https://youtu.be/yVA-xTBeHyM" }
+                ],
+                arabic: [
+                    { title: "Mashaer - Sherine", youtube: "https://youtu.be/cy3FR14Uqww" },
+                    { title: "Ya Tabtab - Nancy Ajram", youtube: "https://youtu.be/hMEK2iXz6Ek" },
+                    { title: "Leilet El Omr - Amr Diab", youtube: "https://youtu.be/QEzNR3CBf4s" },
+                    { title: "Talat Daqat - Abu ft. Yousra", youtube: "https://youtu.be/QQefvCf2fvs" },
+                    { title: "Alf Leila Wa Leila - Umm Kulthum", youtube: "https://youtu.be/OmrwNq4S9ds" },
+                    { title: "Bahebbak Kol Youm Aktar - Hussein Al Jasmi", youtube: "https://youtu.be/3yRWltR50fc" },
+                    { title: "Ana Mesh Hab’ait - Elissa", youtube: "https://youtu.be/fmxiCPXnSK4" },
+                    { title: "Bent El Geran - Hassan Shakosh ft. Omar Kamal", youtube: "https://youtu.be/0GGxTUS4XhM" },
+                    { title: "Fi Hagat - Nancy Ajram", youtube: "https://youtu.be/EDV60Zn83J8" },
+                    { title: "Elly Baena - Saad Lamjarred", youtube: "https://youtu.be/k2em_fZAzD8" },
+                    { title: "Mal El Sham - Hamaki", youtube: "https://youtu.be/twAoaFa2HJ4" },
+                    { title: "Hathebo - Asala", youtube: "https://youtu.be/bFWYPjVb0Nk" },
+                    { title: "Habibi Ya Nour El Ain - Amr Diab", youtube: "https://youtu.be/oEtUtg0rOZs" },
+                    { title: "Ya Salam - Myriam Fares", youtube: "https://youtu.be/PEt8GEy5Kms" },
+                    { title: "Ana Albi Elik Mayyal - Elissa", youtube: "https://youtu.be/SNdyfEecDEY" },
+                    { title: "Ah W Noss - Nancy Ajram", youtube: "https://youtu.be/BRu7U-_Pm0Y" },
+                    { title: "Mashhad Hayaty - Tamer Hosny", youtube: "https://youtu.be/DffspV3ti4M" },
+                    { title: "El Donia Helwa - Ragheb Alama", youtube: "https://youtu.be/Zdps_l5Az5w" },
+                    { title: "Law Bastak - Elissa", youtube: "https://youtu.be/_W7SYonAYrU" },
+                    { title: "Leh Bedy - Saad Lamjarred", youtube: "https://youtu.be/T6dxuBNn8ek" }
+                ]
+            };
+
+            // Generate a random index within the length of the selected mode's song list
+            if (songs[mode] && songs[mode].length > 0) {
+                const randomIndex = Math.floor(Math.random() * songs[mode].length);
+                const randomSong = songs[mode][randomIndex];
+                const songDisplay = document.getElementById('songDisplay');
+
+                songDisplay.innerHTML = `
+                    You should listen to: <br><strong>${randomSong.title}</strong><br>
+                    <a class="link-button" href="${randomSong.youtube}" target="_blank">YouTube</a>
+                `;
+                songDisplay.classList.add('show');
+            } else {
+                document.getElementById('songDisplay').innerText = 'No songs available in this mode yet.';
+            }
+        }
+    </script>
+
+</body>
+</html>
